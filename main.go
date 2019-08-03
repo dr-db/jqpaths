@@ -38,7 +38,7 @@ func showPaths(prefix string, v interface{}) {
 	case string:
 		fmt.Printf("%s = %q\n", prefix, v)
 	default:
-		log.Printf("%s = UNKNOWN TYPE (%T)=%v", t, t)
+		fmt.Printf("%s = UNKNOWN TYPE (%T)=%v", t, t)
 	}
 }
 
