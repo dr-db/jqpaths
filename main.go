@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -21,31 +22,48 @@ func stringPathPart(k string) string {
 	return fmt.Sprintf("[%q]", k)
 }
 
-func showPaths(prefix string, v interface{}) {
+func showPaths(prefix string, v interface{}, results map[string]string) {
 	switch t := v.(type) {
 	case map[string]interface{}:
 		for k, v := range t {
-			showPaths(prefix+stringPathPart(k), v)
+			showPaths(extendPath(prefix, k), v, results)
 		}
 	case []interface{}:
 		for i, v := range t {
-			showPaths(fmt.Sprintf("%s[%d]", prefix, i), v)
+			showPaths(fmt.Sprintf("%s[%d]", prefix, i), v, results)
 		}
 	case bool, float64:
-		fmt.Printf("%s = %v\n", prefix, v)
+		results[prefix] = fmt.Sprintf("%v", v)
 	case nil:
-		fmt.Printf("%s = null\n", prefix)
+		results[prefix] = "null"
 	case string:
-		fmt.Printf("%s = %q\n", prefix, v)
+		results[prefix] = fmt.Sprintf("%q", v)
 	default:
-		fmt.Printf("%s = UNKNOWN TYPE (%T)=%v", prefix, t, t)
+		results[prefix] = fmt.Sprintf("UNKNOWN TYPE (%T)=%v", t, t)
 	}
 }
 
 func main() {
+	var outputStyle string
+	flag.StringVar(&outputStyle, "o", "plain", "output format (\"plain\" or \"json\")")
+	flag.Parse()
+
 	var v interface{}
 	if err := json.NewDecoder(os.Stdin).Decode(&v); err != nil {
 		log.Fatal(err)
 	}
-	showPaths("", v)
+	results := make(map[string]string)
+	showPaths("", v, results)
+	switch outputStyle {
+	case "plain":
+		for k, v := range results {
+			fmt.Printf("%s => %s\n", k, v)
+		}
+	case "json":
+		if err := json.NewEncoder(os.Stdout).Encode(results); err != nil {
+			log.Fatal(err)
+		}
+	default:
+		log.Fatalf("Unknown output style: %q", outputStyle)
+	}
 }

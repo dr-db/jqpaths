@@ -9,7 +9,7 @@ for test in /tests/*.json ; do
 	(
 		IFS='
 '
-		output="$(cat "$test" | /jqpaths)"
+		output="$(cat "$test" | /jqpaths -o json)"
 		for key in $(echo "$output" | jq -r '. | keys[]') ; do
 			expected=$(echo "$output" | jq -r --arg k "$key" '.[$k]')
 			actual=$(cat "$test" | jq "$key")
