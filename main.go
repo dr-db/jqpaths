@@ -15,11 +15,14 @@ func init() {
 	simpleKeyRegex = regexp.MustCompile(`^[a-zA-z][a-zA-z0-9]*$`)
 }
 
-func stringPathPart(k string) string {
+func extendPath(prefix, k string) string {
 	if simpleKeyRegex.MatchString(k) {
-		return "." + k
+		return prefix + "." + k
 	}
-	return fmt.Sprintf("[%q]", k)
+	if prefix == "" {
+		prefix = "."
+	}
+	return fmt.Sprintf("%s[%q]", prefix, k)
 }
 
 func showPaths(prefix string, v interface{}, results map[string]string) {
@@ -30,6 +33,9 @@ func showPaths(prefix string, v interface{}, results map[string]string) {
 		}
 	case []interface{}:
 		for i, v := range t {
+			if prefix == "" {
+				prefix = "."
+			}
 			showPaths(fmt.Sprintf("%s[%d]", prefix, i), v, results)
 		}
 	case bool, float64:
