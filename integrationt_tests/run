@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -x
+set -euo pipefail
+
+readonly img=jqpaths-integration-tests
+
+cd "$(dirname "$0")"
+
+(
+	cd ..
+	go build
+)
+cp ../jqpaths .
+
+docker build -t "$img" .
+
+docker run --rm "$img" /run_tests

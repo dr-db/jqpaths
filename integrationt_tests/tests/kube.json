@@ -1,0 +1,207 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "kind": "Pod",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "mongo-controller-h714w",
+                "generateName": "mongo-controller-",
+                "namespace": "default",
+                "selfLink": "/api/v1/namespaces/default/pods/mongo-controller-bobo",
+                "uid": "yoyo-bobo",
+                "resourceVersion": "200",
+                "creationTimestamp": "2016-03-24T20:42:22Z",
+                "labels": {
+                    "name": "mongo"
+                },
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicationController\",\"namespace\":\"default\",\"name\":\"mongo-controller\",\"uid\":\"e8a8a580-f200-11e5-b197-42010af0002f\",\"apiVersion\":\"v1\",\"resourceVersion\":\"185\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container mongo"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "mongo-persistent-storage",
+                        "gcePersistentDisk": {
+                            "pdName": "mongo-disk",
+                            "fsType": "ext4"
+                        }
+                    },
+                    {
+                        "name": "default-token-bobo",
+                        "secret": {
+                            "secretName": "default-token-bobo"
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "mongo",
+                        "image": "mongo",
+                        "ports": [
+                            {
+                                "name": "mongo",
+                                "hostPort": 27017,
+                                "containerPort": 27017,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "mongo-persistent-storage",
+                                "mountPath": "/data/db"
+                            },
+                            {
+                                "name": "default-token-bobo",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "imagePullPolicy": "Always"
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "serviceAccountName": "default",
+                "serviceAccount": "default",
+                "nodeName": "gke-bobo-30e0e4d0-node-velt",
+                "securityContext": {}
+            },
+            "status": {
+                "phase": "Running",
+                "conditions": [
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2016-03-24T20:42:54Z"
+                    }
+                ],
+                "hostIP": "10.bobo",
+                "podIP": "10.bobo",
+                "startTime": "2016-03-24T20:42:22Z",
+                "containerStatuses": [
+                    {
+                        "name": "mongo",
+                        "state": {
+                            "running": {
+                                "startedAt": "2016-03-24T20:42:53Z"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": true,
+                        "restartCount": 0,
+                        "image": "mongo",
+                        "imageID": "docker://yoyoyo",
+                        "containerID": "docker://yoyoyo"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "Pod",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "web-controller-5e6ij",
+                "generateName": "web-controller-",
+                "namespace": "default",
+                "selfLink": "/api/v1/namespaces/default/pods/web-controller-5e6ij",
+                "uid": "zzz-www-yyy-xxx-bobo",
+                "resourceVersion": "250",
+                "creationTimestamp": "2016-03-24T20:45:55Z",
+                "labels": {
+                    "name": "web"
+                },
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicationController\",\"namespace\":\"default\",\"name\":\"web-controller\",\"uid\":\"67a008be-f201-11e5-b197-42010af0002f\",\"apiVersion\":\"v1\",\"resourceVersion\":\"238\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container web"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "default-token-ccc",
+                        "secret": {
+                            "secretName": "default-token-ccc"
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "web",
+                        "image": "gcr.io/yyy/eeee",
+                        "ports": [
+                            {
+                                "name": "http-server",
+                                "containerPort": 3000,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "default-token-bobo",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "imagePullPolicy": "Always"
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "serviceAccountName": "default",
+                "serviceAccount": "default",
+                "nodeName": "gke-yy-bobo-node-iii",
+                "securityContext": {}
+            },
+            "status": {
+                "phase": "Running",
+                "conditions": [
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2016-03-24T20:46:09Z"
+                    }
+                ],
+                "hostIP": "10.666",
+                "podIP": "10.888",
+                "startTime": "2016-03-24T20:45:55Z",
+                "containerStatuses": [
+                    {
+                        "name": "web",
+                        "state": {
+                            "running": {
+                                "startedAt": "2016-03-24T20:46:08Z"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": true,
+                        "restartCount": 0,
+                        "image": "gcr.io/yyyy/bobo",
+                        "imageID": "docker://blah",
+                        "containerID": "docker://blah"
+                    }
+                ]
+            }
+        }
+    ]
+}
